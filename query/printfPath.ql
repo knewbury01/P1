@@ -23,4 +23,4 @@ class SmallInjectionLikeTest extends TaintTracking::Configuration {
 
 from SmallInjectionLikeTest s , DataFlow::Node src, DataFlow::Node sink
 where s.hasFlow(src, sink)
-select sink, src, sink, "Flow detected between a call to readLine and a printf argument."
+select sink, "Flow detected between a call to readLine and a printf argument."
