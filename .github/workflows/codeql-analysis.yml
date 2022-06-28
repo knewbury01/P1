@@ -40,8 +40,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-   - name: Setup repository
-     run: |
+    - name: Setup repository
+      run: |
         ./setup.sh
 
     # Initializes the CodeQL tools for scanning.
