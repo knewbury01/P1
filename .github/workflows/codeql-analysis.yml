@@ -84,7 +84,7 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
-        output: $CUSTOM_RESULTS
+        output: ${{ env.CUSTOM_RESULTS }}.sarif
         # do not default upload the sarif to this repo
         upload: false
         
