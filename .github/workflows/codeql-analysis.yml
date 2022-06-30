@@ -90,7 +90,7 @@ jobs:
         
     - name: Fix the paths in the sarif
       run: |
-        ./replace.sh ${{ env.other-code-scanning-results }}.sarif
+        ./replace.sh ${{ env.CUSTOM_RESULTS }}.sarif
         
     - name: Upload CodeQL SARIF Results to Other Repo
       run: |
@@ -98,5 +98,5 @@ jobs:
             --repository=${{ env.CUSTOM_GITHUB_REPOSITORY }} \
             --ref=${{ env.CUSTOM_GITHUB_REF }} \
             --commit=${{ env.CUSTOM_GITHUB_SHA }} \
-            --sarif=${{ env.other-code-scanning-results }}.sarif \
+            --sarif=${{ env.CUSTOM_RESULTS }}.sarif \
             --github-auth-stdin=${{ secrets.P1_SECRET }}
