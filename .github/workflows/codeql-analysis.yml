@@ -84,13 +84,13 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
-        output: ${{ env.CUSTOM_RESULTS }}.sarif
+        output: ${{ env.CUSTOM_RESULTS }}
         # do not default upload the sarif to this repo
         upload: false
         
     - name: Fix the paths in the sarif
       run: |
-        ./replace.sh ${{ env.CUSTOM_RESULTS }}.sarif
+        ./replace.sh ${{ env.CUSTOM_RESULTS }}/java.sarif
         
     - name: Upload CodeQL SARIF Results to Other Repo
       run: |
@@ -98,5 +98,5 @@ jobs:
             --repository=${{ env.CUSTOM_GITHUB_REPOSITORY }} \
             --ref=${{ env.CUSTOM_GITHUB_REF }} \
             --commit=${{ env.CUSTOM_GITHUB_SHA }} \
-            --sarif=${{ env.CUSTOM_RESULTS }}.sarif \
+            --sarif=${{ env.CUSTOM_RESULTS }}/java.sarif \
             --github-auth-stdin=${{ secrets.P1_SECRET }}
