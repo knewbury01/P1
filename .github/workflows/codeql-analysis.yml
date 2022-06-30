@@ -75,6 +75,8 @@ jobs:
         debug: true
         config-file: ./.github/codeql/codeql-config.yml
         source-root: ./driver/
+      env: 
+        CODEQL_ACTION_EXTRA_OPTIONS: '{"database":{"init":["--overwrite"]}}'
 
     - run: |
         ./build.sh
