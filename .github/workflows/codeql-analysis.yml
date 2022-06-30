@@ -19,6 +19,14 @@ on:
     branches: [ "main" ]
   schedule:
     - cron: '16 14 * * 6'
+    
+env:
+  CODEQL_BINARY: /opt/hostedtoolcache/CodeQL//x64/codeql/codeql
+  CUSTOM_RESULTS: other-code-scanning-results
+  CUSTOM_GITHUB_REPOSITORY: knewbury01/P2
+  CUSTOM_GITHUB_REF: refs/heads/main
+  # would have to get this from the setup script realistically
+  CUSTOM_GITHUB_SHA: a3672a2297b8584c792d8387d4cfc52875775e0a
 
 jobs:
   analyze:
@@ -44,35 +52,48 @@ jobs:
       run: |
         ./setup.sh
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
+    # The first analysis (with source root at repo root)
+    - name: (1) Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
         debug: true
         config-file: ./.github/codeql/codeql-config.yml
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-        
-        # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # queries: security-extended,security-and-quality
 
     - run: |
         ./build.sh
+
+    - name: (1) Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
       
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+    # The second analysis (with source root at repo root)
+    - name: (2) Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+        debug: true
+        config-file: ./.github/codeql/codeql-config.yml
+        source-root: ./driver/
 
-    #   If the Autobuild fails above, remove it and uncomment the following three lines. 
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
-
-    # - run: |
-    #   echo "Run, Build Application using script"
-    #   ./location_of_script_within_repo/buildscript.sh
+    - run: |
+        ./build.sh
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
-        add-snippets: true
+        output: $CUSTOM_RESULTS
+        # do not default upload the sarif to this repo
+        upload: false
         
+    - name: Fix the paths in the sarif
+      run: |
+        ./replace.sh    
+        
+    - name: Upload CodeQL SARIF Results to Other Repo
+      run: |
+          ${{ env.CODEQL_BINARY }} github upload-results \
+            --repository=${{ env.CUSTOM_GITHUB_REPOSITORY }} \
+            --ref=${{ env.CUSTOM_GITHUB_REF }} \
+            --commit=${{ env.CUSTOM_GITHUB_SHA }} \
+            --sarif=${{ env.other-code-scanning-results }}.sarif \
+            --github-auth-stdin=${{ secrets.P1_SECRET }}
