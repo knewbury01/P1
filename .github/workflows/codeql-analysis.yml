@@ -67,6 +67,10 @@ jobs:
     - name: (1) Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       
+    - run: |
+         ls /home/runner/work/_temp/codeql_databases
+         rm /home/runner/work/_temp/codeql_databases
+      
     # The second analysis (with source root at repo root)
     - name: (2) Initialize CodeQL
       uses: github/codeql-action/init@v2
@@ -75,8 +79,6 @@ jobs:
         debug: true
         config-file: ./.github/codeql/codeql-config.yml
         source-root: ./driver/
-      env: 
-        CODEQL_ACTION_EXTRA_OPTIONS: '{"database":{"init":["--overwrite"]}}'
 
     - run: |
         ./build.sh
