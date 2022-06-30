@@ -90,7 +90,7 @@ jobs:
         
     - name: Fix the paths in the sarif
       run: |
-        ./replace.sh    
+        ./replace.sh ${{ env.other-code-scanning-results }}.sarif
         
     - name: Upload CodeQL SARIF Results to Other Repo
       run: |
