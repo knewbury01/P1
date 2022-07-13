@@ -34,5 +34,5 @@ jobs:
       
     - name: Just a test
       run: |
-        REPO=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
+        REPO=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
         echo "This is the repo: $REPO"
