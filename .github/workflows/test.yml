@@ -11,9 +11,6 @@
 #
 name: "TEST"
 
-on:
-  push:
-    branches: [ "main" ]
     
 jobs:
   analyze:
