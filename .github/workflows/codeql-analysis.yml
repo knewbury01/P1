@@ -14,8 +14,6 @@ name: "CodeQL"
 on:
   push:
     branches: ['*/*']
-  schedule:
-    - cron: '* * * * *'
     
 env:
   #not ideal to use hardcoded cli env path but this could be a bundle or just cli obtained in workflow
