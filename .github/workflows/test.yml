@@ -13,9 +13,7 @@ name: "TEST"
 
 on:
   push:
-     branches: ['*']
-  schedule:
-    - cron: '* * * * *'
+     branches: [test]
     
 jobs:
   analyze:
