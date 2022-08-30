@@ -17,7 +17,7 @@ on:
     
 env:
   #not ideal to use hardcoded cli env path but this could be a bundle or just cli obtained in workflow
-  CODEQL_BINARY: /opt/hostedtoolcache/CodeQL/0.0.0-20220728/x64/codeql/codeql
+  CODEQL_BINARY: /opt/hostedtoolcache/CodeQL/0.0.0-20220811/x64/codeql/codeql
   CUSTOM_RESULTS: other-code-scanning-results
   CUSTOM_GITHUB_REPOSITORY: knewbury01/P2
   CUSTOM_GITHUB_REF: refs/heads/main
